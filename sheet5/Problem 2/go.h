@@ -6,16 +6,16 @@
 #include <cassert>
 
 
-class Piece
-{
+class Piece                 //Class defining your game pieces
+{                           //Every Piece keeps track of its type, its group index, and its position.
 private:
-    int m_type;
+    int m_type;     
     int m_grpID;
     int m_x;
     int m_y;
     
     
-public:
+public:                     //Public Interface
     Piece();
     int const *getType();
     void setType(int type);
@@ -28,8 +28,8 @@ public:
 
 };
 
-class Board
-{
+class Board                 //Defines the board. Stores and allows the placement of pieces. Checks for and stores piece chains. 
+{                           //Checks for liberties of said chains. Tracks the game score. Prints the board and game score.
 private:
     std::vector<std::vector<Piece>> goBoard = std::vector<std::vector<Piece>>(7, std::vector<Piece>(7));
     std::vector<std::vector<Piece>> vecGrps;
@@ -40,7 +40,7 @@ private:
     int m_whiteScore, m_blackScore;
     int m_counter;
     void trimVec();
-public:
+public:                     //Public Interface
     Board();
     void printBoard();
     void printGrpID();
