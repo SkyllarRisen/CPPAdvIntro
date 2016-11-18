@@ -34,16 +34,18 @@ private:
     std::vector<std::vector<Piece>> goBoard = std::vector<std::vector<Piece>>(7, std::vector<Piece>(7));
     std::vector<std::vector<Piece>> vecGrps;
     std::vector<Piece> placedPieces;
+    void getLiberties();
     void getGroups();
     void reassignGrpID();
+    int m_whiteScore, m_blackScore;
     int m_counter;
     void trimVec();
 public:
     Board();
     void printBoard();
     void printGrpID();
-    int placePiece(int& x, int& y, int& type);
-
+    int placePiece(int x, int y, int type);
+    Piece getPiece(int x, int y);
 };
 
 
