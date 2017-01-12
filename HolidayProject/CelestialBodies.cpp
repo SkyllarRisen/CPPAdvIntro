@@ -18,6 +18,8 @@ void vectorAdd(std::array<double, 3>(&result), std::vector<std::array<double, 3>
 std::vector<CelestialBody*> CelestialBody::celBodyList = {};
 const double CelestialBody::newtonG{ 6.67408e-11 };
 double CelestialBody::m_energy{ 0 };
+double stepModifier = 1e3;
+
 CelestialBody::CelestialBody() : m_mass{ 0 }, m_coordinates{}, m_velocity{}
 {
     std::cout << "Wrong constructor, you fool." << std::endl;
@@ -102,15 +104,15 @@ void CelestialBody::calcForces(std::array<double, 3>(&result))
                 continue;
             std::array<double, 3> normVec, temp2, forces;
             double dist, distSquared;
-            temp2.at(0) = this->getCoordinates().at(0) - celBodyList.at(i)->getCoordinates().at(0);
-            temp2.at(1) = this->getCoordinates().at(1) - celBodyList.at(i)->getCoordinates().at(1);
-            temp2.at(2) = this->getCoordinates().at(2) - celBodyList.at(i)->getCoordinates().at(2);
-            distSquared = temp2.at(0) * temp2.at(0) + temp2.at(1) * temp2.at(1) + temp2.at(2) * temp2.at(2);
-            dist = std::sqrt(distSquared);            
+            temp2.at(0) = (this->getCoordinates().at(0) - celBodyList.at(i)->getCoordinates().at(0)) / 1e6;
+            temp2.at(1) = (this->getCoordinates().at(1) - celBodyList.at(i)->getCoordinates().at(1)) / 1e6;
+            temp2.at(2) = (this->getCoordinates().at(2) - celBodyList.at(i)->getCoordinates().at(2)) / 1e6;
+            distSquared = (temp2.at(0) * temp2.at(0) + temp2.at(1) * temp2.at(1) + temp2.at(2) * temp2.at(2));
+            dist = std::sqrt(distSquared)*1e6;            
             normVec.at(0) = temp2.at(0) / dist;
             normVec.at(1) = temp2.at(1) / dist;
             normVec.at(2) = temp2.at(2) / dist;           
-            double equation = ((-1)*(CelestialBody::newtonG)*(celBodyList.at(i)->getMass()) / distSquared);
+            double equation = (-1)*(CelestialBody::newtonG)*(celBodyList.at(i)->getMass()) / distSquared / 1e6;
             forces.at(0) = equation*normVec.at(0);
             forces.at(1) = equation*normVec.at(1);
             forces.at(2) = equation*normVec.at(2);
@@ -124,17 +126,30 @@ void CelestialBody::updatePosition()
 {
     std::array<double, 3> forces{ 0,0,0 };
     this->calcForces(forces);
-    this->m_coordinates.at(0) = m_coordinates.at(0) + m_velocity.at(0)*1000 + 0.5*forces.at(0) * 1000 * 1000;
-    this->m_coordinates.at(1) = m_coordinates.at(1) + m_velocity.at(1) * 1000 + 0.5*forces.at(1) * 1000 * 1000;
-    this->m_coordinates.at(2) = m_coordinates.at(2) + m_velocity.at(2) * 1000 + 0.5*forces.at(2) * 1000 * 1000;
-    this->m_velocity.at(0) = m_velocity.at(0) + forces.at(0) * 1000;
-    this->m_velocity.at(1) = m_velocity.at(1) + forces.at(1) * 1000;
-    this->m_velocity.at(2) = m_velocity.at(2) + forces.at(2) * 1000;
-    this->m_kinEnergy = 0.5*this->m_mass*(this->m_velocity.at(0)*this->m_velocity.at(0) + this->m_velocity.at(1)*this->m_velocity.at(1) + this->m_velocity.at(2)*this->m_velocity.at(2));
+    this->m_tempcoordinates.at(0) = m_coordinates.at(0) + m_velocity.at(0)* stepModifier + 0.5*forces.at(0) * stepModifier * stepModifier;
+    this->m_tempcoordinates.at(1) = m_coordinates.at(1) + m_velocity.at(1) * stepModifier + 0.5*forces.at(1) * stepModifier * stepModifier;
+    this->m_tempcoordinates.at(2) = m_coordinates.at(2) + m_velocity.at(2) * stepModifier + 0.5*forces.at(2) * stepModifier * stepModifier;
+    this->m_tempvelocity.at(0) = m_velocity.at(0) + forces.at(0) * stepModifier;
+    this->m_tempvelocity.at(1) = m_velocity.at(1) + forces.at(1) * stepModifier;
+    this->m_tempvelocity.at(2) = m_velocity.at(2) + forces.at(2) * stepModifier;
+    this->m_kinEnergy = 0.5*this->m_mass*(this->m_tempvelocity.at(0)*this->m_tempvelocity.at(0) + this->m_tempvelocity.at(1)*this->m_tempvelocity.at(1) + this->m_tempvelocity.at(2)*this->m_tempvelocity.at(2));
     CelestialBody::m_energy += m_kinEnergy;
 }
 
 double CelestialBody::getKinEnergy()
 {
     return m_kinEnergy;
+}
+
+void CelestialBody::copyTemp() 
+{
+    for (int i = 0; i < celBodyList.size(); ++i)
+    {
+        celBodyList.at(i)->m_coordinates.at(0) = celBodyList.at(i)->m_tempcoordinates.at(0);
+        celBodyList.at(i)->m_coordinates.at(1) = celBodyList.at(i)->m_tempcoordinates.at(1);
+        celBodyList.at(i)->m_coordinates.at(2) = celBodyList.at(i)->m_tempcoordinates.at(2);
+        celBodyList.at(i)->m_velocity.at(0) = celBodyList.at(i)->m_tempvelocity.at(0);
+        celBodyList.at(i)->m_velocity.at(1) = celBodyList.at(i)->m_tempvelocity.at(1);
+        celBodyList.at(i)->m_velocity.at(2) = celBodyList.at(i)->m_tempvelocity.at(2);
+    }
 }

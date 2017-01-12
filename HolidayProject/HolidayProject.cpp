@@ -39,15 +39,18 @@ bool timeStep()
         }
         CelestialBody::m_energy += CelestialBody::celBodyList.at(i)->getKinEnergy();
         selFile.open(CelestialBody::celBodyList.at(i)->getName() +".dat" , std::ios::app);
-        selFile << CelestialBody::celBodyList.at(i)->getCoordinates().at(0) << " " << CelestialBody::celBodyList.at(i)->getCoordinates().at(1) << " " << CelestialBody::celBodyList.at(i)->getCoordinates().at(2) << std::endl;
+        selFile << CelestialBody::celBodyList.at(i)->getCoordinates().at(0) << " " << CelestialBody::celBodyList.at(i)->getCoordinates().at(1)  << " " << CelestialBody::celBodyList.at(i)->getCoordinates().at(2)  << std::endl;
         selFile.close();
     }
-    CelestialBody::m_energy += potEnergy;
+//    CelestialBody::m_energy /= 1e6;
+    CelestialBody::copyTemp();
+    CelestialBody::m_energy += (potEnergy/1000);
     selFile.open("Energy.dat", std::ios::app);
     selFile << CelestialBody::m_energy << std::endl;
     selFile.close();
-    if (steps > 10)
+    if (steps > 1e5)
         return false;
+    std::cout << (steps/1e5)*100 << std::endl;
     ++steps;
     CelestialBody::m_energy = 0;
     return true;

@@ -11,13 +11,14 @@
 class CelestialBody
 {
 private:
-    std::array<double, 3> m_coordinates, m_velocity;
+    std::array<double, 3> m_coordinates, m_velocity, m_tempcoordinates, m_tempvelocity;
     double const m_mass;
 
     double m_kinEnergy;
     std::string m_name;
     void calcForces(std::array<double, 3> (&result));
 public:
+    static void copyTemp();
     double getKinEnergy();
     static double m_energy;
     static std::vector<CelestialBody*> celBodyList;
