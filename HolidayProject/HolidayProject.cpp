@@ -74,11 +74,21 @@ void planet()
     new CelestialBody(coordinates, velocity, mass, name);
 }
 
+void planet2()
+{
+    std::array<double, 3> coordinates{ -150e9,0,0 };
+    std::array<double, 3> velocity{ 0,3e4,0 };
+    std::string name{ "planet2" };
+    double mass{ 6e24 };
+    new CelestialBody(coordinates, velocity, mass, name);
+}
+
 int main()
 {
     using namespace std;
     sun();
     planet();
+    planet2();
     makeFiles();
     while (timeStep())
     {
