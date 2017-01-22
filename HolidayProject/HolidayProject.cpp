@@ -74,6 +74,78 @@ void sun2()
     new CelestialBody(coordinates, velocity, mass, name);
 }
 
+void probe1()
+{
+    std::array<double, 3> coordinates{ 0,-200000000000,0 };
+    std::array<double, 3> velocity{ 0.5e4,0.5e4,0 };
+    std::string name{ "probe1" };
+    double mass{ 1 };
+    new CelestialBody(coordinates, velocity, mass, name);
+}
+
+void probe2()
+{
+    std::array<double, 3> coordinates{ 0,-200000000001,0 };
+    std::array<double, 3> velocity{ 1e4,1e4,0 };
+    std::string name{ "probe2" };
+    double mass{ 1 };
+    new CelestialBody(coordinates, velocity, mass, name);
+}
+
+void probe3()
+{
+    std::array<double, 3> coordinates{ 0,-200000000002,0 };
+    std::array<double, 3> velocity{ 2e4,2e4,0 };
+    std::string name{ "probe3" };
+    double mass{ 1 };
+    new CelestialBody(coordinates, velocity, mass, name);
+}
+
+void probe4()
+{
+    std::array<double, 3> coordinates{ 0,-200000000003,0 };
+    std::array<double, 3> velocity{ 3e4,3e4,0 };
+    std::string name{ "probe4" };
+    double mass{ 1 };
+    new CelestialBody(coordinates, velocity, mass, name);
+}
+
+void probe5()
+{
+    std::array<double, 3> coordinates{ 0,150000000000,0 };
+    std::array<double, 3> velocity{ -0.5e4,-0.5e4,0 };
+    std::string name{ "probe5" };
+    double mass{ 1 };
+    new CelestialBody(coordinates, velocity, mass, name);
+}
+
+void probe6()
+{
+    std::array<double, 3> coordinates{ 0,150000000001,0 };
+    std::array<double, 3> velocity{ -1e4,-1e4,0 };
+    std::string name{ "probe6" };
+    double mass{ 1 };
+    new CelestialBody(coordinates, velocity, mass, name);
+}
+
+void probe7()
+{
+    std::array<double, 3> coordinates{ 0,150000000002,0 };
+    std::array<double, 3> velocity{ -2e4,-2e4,0 };
+    std::string name{ "probe7" };
+    double mass{ 1 };
+    new CelestialBody(coordinates, velocity, mass, name);
+}
+
+void probe8()
+{
+    std::array<double, 3> coordinates{ 0,150000000003,0 };
+    std::array<double, 3> velocity{ -3e4,-3e4,0 };
+    std::string name{ "probe8" };
+    double mass{ 1 };
+    new CelestialBody(coordinates, velocity, mass, name);
+}
+
 void planet()
 {
     std::array<double, 3> coordinates{ -150e9,0,0 };
@@ -83,12 +155,23 @@ void planet()
     new CelestialBody(coordinates, velocity, mass, name);
 }
 
+
 int main()
 {
     using namespace std;
     sun();
     sun2();
-    planet();
+    probe1();       //different speeds
+    probe2();       //
+    probe3();       //
+    probe4();       //
+    probe5();       //different distance
+    probe6();       //
+    probe7();       //
+    probe8();       //
+
+
+    //planet();
     makeFiles();
     while (timeStep())
     {
