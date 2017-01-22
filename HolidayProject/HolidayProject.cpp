@@ -58,27 +58,27 @@ bool timeStep()
 
 void sun()
 {
-    std::array<double, 3> coordinates{ 0,0,0 };
+    std::array<double, 3> coordinates{0,0,0 };
     std::array<double, 3> velocity{ 0,0,0 };
-    std::string name{ "Sun" };
+    std::string name{ "Sun1" };
     double mass{ 2e30 };
     new CelestialBody(coordinates, velocity, mass, name);    
 }
 
-void planet()
+void sun2()
 {
     std::array<double, 3> coordinates{ 150e9,0,0 };
     std::array<double, 3> velocity{ 0,3e4,0 };
-    std::string name{ "planet" };
-    double mass{ 6e24 };
+    std::string name{ "Sun2" };
+    double mass{ 1e30 };
     new CelestialBody(coordinates, velocity, mass, name);
 }
 
-void planet2()
+void planet()
 {
     std::array<double, 3> coordinates{ -150e9,0,0 };
-    std::array<double, 3> velocity{ 0,3e4,0 };
-    std::string name{ "planet2" };
+    std::array<double, 3> velocity{ 0, -3e4,0 };
+    std::string name{ "planet1" };
     double mass{ 6e24 };
     new CelestialBody(coordinates, velocity, mass, name);
 }
@@ -87,8 +87,8 @@ int main()
 {
     using namespace std;
     sun();
+    sun2();
     planet();
-    planet2();
     makeFiles();
     while (timeStep())
     {
